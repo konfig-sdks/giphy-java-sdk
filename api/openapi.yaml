@@ -1,0 +1,2449 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@giphy.com
+  description: Giphy API
+  termsOfService: https://developers.giphy.com/
+  title: Giphy API
+  version: "1.0"
+  x-apisguru-categories:
+  - media
+  x-logo:
+    url: https://twitter.com/GIPHY/profile_image?size=original
+  x-origin:
+  - version: "3.0"
+    format: openapi
+    url: https://raw.githubusercontent.com/faragorn/open-api-specs/master/specs/giphy_api/1.0/index.yml
+  x-providerName: giphy.com
+  x-konfig-ignore:
+    potential-incorrect-type: true
+  x-konfig-has-globally-required-security: true
+externalDocs:
+  description: Official Giphy Documentation
+  url: https://developers.giphy.com/docs/
+servers:
+- url: https://api.giphy.com/v1
+security:
+- api_key: []
+tags:
+- name: gifs
+- name: stickers
+paths:
+  /gifs:
+    get:
+      description: |
+        A multiget version of the get GIF by ID endpoint.
+      operationId: Gifs_getByIds
+      parameters:
+      - description: "Filters results by specified GIF IDs, separated by commas."
+        explode: true
+        in: query
+        name: ids
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsGetByIdsResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Get GIFs by ID
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs
+      x-accepts: application/json
+  /gifs/random:
+    get:
+      description: |
+        Returns a random GIF, limited by tag. Excluding the tag parameter will return a random GIF from the GIPHY catalog.
+      operationId: Gifs_getRandomGif
+      parameters:
+      - description: Filters results by specified tag.
+        explode: true
+        in: query
+        name: tag
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsGetRandomGifResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Random GIF
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs-random
+      x-accepts: application/json
+  /gifs/search:
+    get:
+      description: |
+        Search all GIPHY GIFs for a word or phrase. Punctuation will be stripped and ignored.  Use a plus or url encode for phrases. Example paul+rudd, ryan+gosling or american+psycho.
+      operationId: Gifs_searchGifs
+      parameters:
+      - description: Search query term or prhase.
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of records to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        style: form
+      - description: An optional results offset.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Specify default language for regional content; use a 2-letter
+          ISO 639-1 language code.
+        explode: true
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsSearchGifsResponse'
+          description: Search results
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Search GIFs
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs-search
+      x-accepts: application/json
+  /gifs/translate:
+    get:
+      description: |
+        The translate API draws on search, but uses the GIPHY `special sauce` to handle translating from one vocabulary to another. In this case, words and phrases to GIF
+      operationId: Gifs_translatePhraseGif
+      parameters:
+      - description: Search term.
+        explode: true
+        in: query
+        name: s
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsTranslatePhraseGifResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Translate phrase to GIF
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs-translate
+      x-accepts: application/json
+  /gifs/trending:
+    get:
+      description: |
+        Fetch GIFs currently trending online. Hand curated by the GIPHY editorial team.  The data returned mirrors the GIFs showcased on the GIPHY homepage. Returns 25 results by default.
+      operationId: Gifs_getTrendingGifs
+      parameters:
+      - description: The maximum number of records to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        style: form
+      - description: An optional results offset.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsGetTrendingGifsResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Trending GIFs
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs-trending
+      x-accepts: application/json
+  /gifs/{gifId}:
+    get:
+      description: |
+        Returns a GIF given that GIF's unique ID
+      operationId: Gifs_getById
+      parameters:
+      - description: Filters results by specified GIF ID.
+        explode: false
+        in: path
+        name: gifId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GifsGetByIdResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Get GIF by Id
+      tags:
+      - gifs
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--gifs-gifId
+      x-accepts: application/json
+  /stickers/random:
+    get:
+      description: |
+        Returns a random GIF, limited by tag. Excluding the tag parameter will return a random GIF from the GIPHY catalog.
+      operationId: Stickers_getRandom
+      parameters:
+      - description: Filters results by specified tag.
+        explode: true
+        in: query
+        name: tag
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StickersGetRandomResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Random Sticker
+      tags:
+      - stickers
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--stickers-random
+      x-accepts: application/json
+  /stickers/search:
+    get:
+      description: |
+        Replicates the functionality and requirements of the classic GIPHY search, but returns animated stickers rather than GIFs.
+      operationId: Stickers_findAnimatedStickers
+      parameters:
+      - description: Search query term or prhase.
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of records to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        style: form
+      - description: An optional results offset.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Specify default language for regional content; use a 2-letter
+          ISO 639-1 language code.
+        explode: true
+        in: query
+        name: lang
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StickersFindAnimatedStickersResponse'
+          description: Search results
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Search Stickers
+      tags:
+      - stickers
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--stickers-search
+      x-accepts: application/json
+  /stickers/translate:
+    get:
+      description: |
+        The translate API draws on search, but uses the GIPHY `special sauce` to handle translating from one vocabulary to another. In this case, words and phrases to GIFs.
+      operationId: Stickers_translatePhraseToSticker
+      parameters:
+      - description: Search term.
+        explode: true
+        in: query
+        name: s
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StickersTranslatePhraseToStickerResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Translate phrase to Sticker
+      tags:
+      - stickers
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--stickers-translate
+      x-accepts: application/json
+  /stickers/trending:
+    get:
+      description: |
+        Fetch Stickers currently trending online. Hand curated by the GIPHY editorial team. Returns 25 results by default.
+      operationId: Stickers_getTrending
+      parameters:
+      - description: The maximum number of records to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        style: form
+      - description: An optional results offset.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        style: form
+      - description: Filters results by specified rating.
+        explode: true
+        in: query
+        name: rating
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StickersGetTrendingResponse'
+          description: ""
+        "400":
+          description: Your request was formatted incorrectly or missing required
+            parameters.
+        "403":
+          description: You weren't authorized to make your request; most likely this
+            indicates an issue with your API Key.
+        "404":
+          description: "The particular GIF you are requesting was not found. This\
+            \ occurs, for example, if you request a GIF by an id that does not exist."
+        "429":
+          description: |
+            Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+      summary: Trending Stickers
+      tags:
+      - stickers
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--stickers-trending
+      x-accepts: application/json
+components:
+  parameters:
+    gifId:
+      description: Filters results by specified GIF ID.
+      explode: false
+      in: path
+      name: gifId
+      required: true
+      schema:
+        format: int32
+        type: integer
+      style: simple
+    gifIds:
+      description: "Filters results by specified GIF IDs, separated by commas."
+      explode: true
+      in: query
+      name: ids
+      required: false
+      schema:
+        type: string
+      style: form
+    lang:
+      description: Specify default language for regional content; use a 2-letter ISO
+        639-1 language code.
+      explode: true
+      in: query
+      name: lang
+      required: false
+      schema:
+        type: string
+      style: form
+    limit:
+      description: The maximum number of records to return.
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        default: 25
+        example: 25
+        format: int32
+        type: integer
+        x-konfig-original-example: 25
+        x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+      style: form
+    offset:
+      description: An optional results offset.
+      explode: true
+      in: query
+      name: offset
+      required: false
+      schema:
+        default: 0
+        example: 0
+        format: int32
+        type: integer
+        x-konfig-original-example: 0
+        x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+      style: form
+    query:
+      description: Search query term or prhase.
+      explode: true
+      in: query
+      name: q
+      required: true
+      schema:
+        type: string
+      style: form
+    rating:
+      description: Filters results by specified rating.
+      explode: true
+      in: query
+      name: rating
+      required: false
+      schema:
+        type: string
+      style: form
+    tag:
+      description: Filters results by specified tag.
+      explode: true
+      in: query
+      name: tag
+      required: false
+      schema:
+        type: string
+      style: form
+    term:
+      description: Search term.
+      explode: true
+      in: query
+      name: s
+      required: true
+      schema:
+        type: string
+      style: form
+  responses:
+    BadRequest:
+      description: Your request was formatted incorrectly or missing required parameters.
+    Forbidden:
+      description: You weren't authorized to make your request; most likely this indicates
+        an issue with your API Key.
+    NotFound:
+      description: "The particular GIF you are requesting was not found. This occurs,\
+        \ for example, if you request a GIF by an id that does not exist."
+    TooManyRequests:
+      description: |
+        Your API Key is making too many requests. Read about [requesting a Production Key](https://developers.giphy.com/docs/#access) to upgrade your API Key rate limits.
+  schemas:
+    Gif:
+      example:
+        import_datetime: 2013-08-01T12:41:48Z
+        images:
+          preview: null
+          original: null
+          preview_gif: null
+          fixed_height_small: null
+          looping: null
+          downsized_still: null
+          fixed_width: null
+          downsized_large: null
+          fixed_height_downsampled: null
+          downsized_medium: null
+          fixed_height: null
+          fixed_height_small_still: null
+          fixed_width_downsampled: null
+          downsized_small: null
+          fixed_width_small: null
+          fixed_height_still: null
+          fixed_width_small_still: null
+          fixed_width_still: null
+          downsized: null
+          original_still: null
+        trending_datetime: 2013-08-01T12:41:48Z
+        update_datetime: 2013-08-01T12:41:48Z
+        bitly_url: http://gph.is/1gsWDcL
+        rating: g
+        source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+        type: gif
+        source_tld: cheezburger.com
+        url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+        tags:
+        - tags
+        - tags
+        create_datetime: 2013-08-01T12:41:48Z
+        source_post_url: http://cheezburger.com/5282328320
+        content_url: content_url
+        featured_tags:
+        - featured_tags
+        - featured_tags
+        id: YsTs5ltWtEhnq
+        user:
+          twitter: '@joecool4000'
+          avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+          profile_url: https://giphy.com/cheezburger/
+          banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+          display_name: JoeCool4000
+          username: joecool4000
+        slug: confused-flying-YsTs5ltWtEhnq
+        embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+        username: JoeCool4000
+      properties:
+        tags:
+          description: |
+            An array of tags for this GIF (Note: Not available when using the Public Beta Key)
+          items:
+            description: Tag name
+            type: string
+          type: array
+        bitly_url:
+          description: The unique bit.ly URL for this GIF
+          example: http://gph.is/1gsWDcL
+          type: string
+          x-konfig-original-example: http://gph.is/1gsWDcL
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-bitly_url
+        content_url:
+          description: Currently unused
+          type: string
+        create_datetime:
+          description: The date this GIF was added to the GIPHY database.
+          example: 2013-08-01T12:41:48Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2013-08-01T12:41:48.000Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-create_datetime
+        embded_url:
+          description: A URL used for embedding this GIF
+          example: http://giphy.com/embed/YsTs5ltWtEhnq
+          type: string
+          x-konfig-original-example: http://giphy.com/embed/YsTs5ltWtEhnq
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-embded_url
+        featured_tags:
+          description: |
+            An array of featured tags for this GIF (Note: Not available when using the Public Beta Key)
+          items:
+            description: Tag name
+            type: string
+          type: array
+        id:
+          description: This GIF's unique ID
+          example: YsTs5ltWtEhnq
+          type: string
+          x-konfig-original-example: YsTs5ltWtEhnq
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-id
+        images:
+          $ref: '#/components/schemas/Gif_images'
+        import_datetime:
+          description: The creation or upload date from this GIF's source.
+          example: 2013-08-01T12:41:48Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2013-08-01T12:41:48.000Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-import_datetime
+        rating:
+          description: "The MPAA-style rating for this content. Examples include Y,\
+            \ G, PG, PG-13 and R"
+          example: g
+          type: string
+          x-konfig-original-example: g
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-rating
+        slug:
+          description: The unique slug used in this GIF's URL
+          example: confused-flying-YsTs5ltWtEhnq
+          type: string
+          x-konfig-original-example: confused-flying-YsTs5ltWtEhnq
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-slug
+        source:
+          description: The page on which this GIF was found
+          example: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: string
+          x-konfig-original-example: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-source
+        source_post_url:
+          description: The URL of the webpage on which this GIF was found.
+          example: http://cheezburger.com/5282328320
+          type: string
+          x-konfig-original-example: http://cheezburger.com/5282328320
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-source_post_url
+        source_tld:
+          description: The top level domain of the source URL.
+          example: cheezburger.com
+          type: string
+          x-konfig-original-example: cheezburger.com
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-source_tld
+        trending_datetime:
+          description: "The date on which this gif was marked trending, if applicable."
+          example: 2013-08-01T12:41:48Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2013-08-01T12:41:48.000Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-trending_datetime
+        type:
+          default: gif
+          description: "Type of the gif. By default, this is almost always gif"
+          enum:
+          - gif
+          example: gif
+          type: string
+          x-konfig-original-example: gif
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-type
+        update_datetime:
+          description: The date on which this GIF was last updated.
+          example: 2013-08-01T12:41:48Z
+          format: date-time
+          type: string
+          x-konfig-original-example: 2013-08-01T12:41:48.000Z
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-update_datetime
+        url:
+          description: The unique URL for this GIF
+          example: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          type: string
+          x-konfig-original-example: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-url
+        user:
+          $ref: '#/components/schemas/User'
+        username:
+          description: "The username this GIF is attached to, if applicable"
+          example: JoeCool4000
+          type: string
+          x-konfig-original-example: JoeCool4000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Gif-properties-username
+      type: object
+    Image:
+      properties:
+        frames:
+          description: The number of frames in this GIF.
+          example: "15"
+          type: string
+          x-konfig-original-example: "15"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-frames
+        height:
+          description: The height of this GIF in pixels.
+          example: "200"
+          type: string
+          x-konfig-original-example: "200"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-height
+        mp4:
+          description: The URL for this GIF in .MP4 format.
+          example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.mp4
+          type: string
+          x-konfig-original-example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.mp4
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-mp4
+        mp4_size:
+          description: The size in bytes of the .MP4 file corresponding to this GIF.
+          example: "25123"
+          type: string
+          x-konfig-original-example: "25123"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-mp4_size
+        size:
+          description: The size of this GIF in bytes.
+          example: "32381"
+          type: string
+          x-konfig-original-example: "32381"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-size
+        url:
+          description: The publicly-accessible direct URL for this GIF.
+          example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/200.gif
+          type: string
+          x-konfig-original-example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/200.gif
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-url
+        webp:
+          description: The URL for this GIF in .webp format.
+          example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.webp
+          type: string
+          x-konfig-original-example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.webp
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-webp
+        webp_size:
+          description: The size in bytes of the .webp file corresponding to this GIF.
+          example: "12321"
+          type: string
+          x-konfig-original-example: "12321"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-webp_size
+        width:
+          description: The width of this GIF in pixels.
+          example: "320"
+          type: string
+          x-konfig-original-example: "320"
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Image-properties-width
+      type: object
+    Meta:
+      description: |
+        The Meta Object contains basic information regarding the request, whether it was successful, and the response given by the API.  Check `responses` to see a description of types of response codes the API might give you under different cirumstances.
+      example:
+        msg: OK
+        response_id: 57eea03c72381f86e05c35d2
+        status: 200
+      properties:
+        msg:
+          description: HTTP Response Message
+          example: OK
+          type: string
+          x-konfig-original-example: OK
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Meta-properties-msg
+        response_id:
+          description: A unique ID paired with this response from the API.
+          example: 57eea03c72381f86e05c35d2
+          type: string
+          x-konfig-original-example: 57eea03c72381f86e05c35d2
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Meta-properties-response_id
+        status:
+          description: HTTP Response Code
+          example: 200
+          format: int32
+          type: integer
+          x-konfig-original-example: 200
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Meta-properties-status
+      type: object
+    Pagination:
+      description: |
+        The Pagination Object contains information relating to the number of total results available as well as the number of results fetched and their relative positions.
+      example:
+        offset: 75
+        total_count: 250
+        count: 25
+      properties:
+        count:
+          description: Total number of items returned.
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Pagination-properties-count
+        offset:
+          description: Position in pagination.
+          example: 75
+          format: int32
+          type: integer
+          x-konfig-original-example: 75
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Pagination-properties-offset
+        total_count:
+          description: Total number of items available.
+          example: 250
+          format: int32
+          type: integer
+          x-konfig-original-example: 250
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Pagination-properties-total_count
+      type: object
+    User:
+      description: "The User Object contains information about the user associated\
+        \ with a GIF and URLs to assets such as that user's avatar image, profile,\
+        \ and more."
+      example:
+        twitter: '@joecool4000'
+        avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+        profile_url: https://giphy.com/cheezburger/
+        banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+        display_name: JoeCool4000
+        username: joecool4000
+      properties:
+        avatar_url:
+          description: The URL for this user's avatar image.
+          example: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+          type: string
+          x-konfig-original-example: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-avatar_url
+        banner_url:
+          description: The URL for the banner image that appears atop this user's
+            profile page.
+          example: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+          type: string
+          x-konfig-original-example: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-banner_url
+        display_name:
+          description: The display name associated with this user (contains formatting
+            the base username might not).
+          example: JoeCool4000
+          type: string
+          x-konfig-original-example: JoeCool4000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-display_name
+        profile_url:
+          description: The URL for this user's profile.
+          example: https://giphy.com/cheezburger/
+          type: string
+          x-konfig-original-example: https://giphy.com/cheezburger/
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-profile_url
+        twitter:
+          description: "The Twitter username associated with this user, if applicable."
+          example: '@joecool4000'
+          type: string
+          x-konfig-original-example: '@joecool4000'
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-twitter
+        username:
+          description: The username associated with this user.
+          example: joecool4000
+          type: string
+          x-konfig-original-example: joecool4000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-username
+      type: object
+    GifsGetByIdsResponse:
+      example:
+        pagination:
+          offset: 75
+          total_count: 250
+          count: 25
+        data:
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Gif'
+          type: array
+        meta:
+          $ref: '#/components/schemas/Meta'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GifsGetRandomGifResponse:
+      example:
+        data:
+          import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          $ref: '#/components/schemas/Gif'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GifsSearchGifsResponse:
+      example:
+        pagination:
+          offset: 75
+          total_count: 250
+          count: 25
+        data:
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Gif'
+          type: array
+        meta:
+          $ref: '#/components/schemas/Meta'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GifsTranslatePhraseGifResponse:
+      example:
+        data:
+          import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          $ref: '#/components/schemas/Gif'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GifsGetTrendingGifsResponse:
+      example:
+        pagination:
+          offset: 75
+          total_count: 250
+          count: 25
+        data:
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Gif'
+          type: array
+        meta:
+          $ref: '#/components/schemas/Meta'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    GifsGetByIdResponse:
+      example:
+        data:
+          import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          $ref: '#/components/schemas/Gif'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    StickersGetRandomResponse:
+      example:
+        data:
+          import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          $ref: '#/components/schemas/Gif'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    StickersFindAnimatedStickersResponse:
+      example:
+        pagination:
+          offset: 75
+          total_count: 250
+          count: 25
+        data:
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Gif'
+          type: array
+        meta:
+          $ref: '#/components/schemas/Meta'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    StickersTranslatePhraseToStickerResponse:
+      example:
+        data:
+          import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          $ref: '#/components/schemas/Gif'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    StickersGetTrendingResponse:
+      example:
+        pagination:
+          offset: 75
+          total_count: 250
+          count: 25
+        data:
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        - import_datetime: 2013-08-01T12:41:48Z
+          images:
+            preview: null
+            original: null
+            preview_gif: null
+            fixed_height_small: null
+            looping: null
+            downsized_still: null
+            fixed_width: null
+            downsized_large: null
+            fixed_height_downsampled: null
+            downsized_medium: null
+            fixed_height: null
+            fixed_height_small_still: null
+            fixed_width_downsampled: null
+            downsized_small: null
+            fixed_width_small: null
+            fixed_height_still: null
+            fixed_width_small_still: null
+            fixed_width_still: null
+            downsized: null
+            original_still: null
+          trending_datetime: 2013-08-01T12:41:48Z
+          update_datetime: 2013-08-01T12:41:48Z
+          bitly_url: http://gph.is/1gsWDcL
+          rating: g
+          source: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+          type: gif
+          source_tld: cheezburger.com
+          url: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+          tags:
+          - tags
+          - tags
+          create_datetime: 2013-08-01T12:41:48Z
+          source_post_url: http://cheezburger.com/5282328320
+          content_url: content_url
+          featured_tags:
+          - featured_tags
+          - featured_tags
+          id: YsTs5ltWtEhnq
+          user:
+            twitter: '@joecool4000'
+            avatar_url: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+            profile_url: https://giphy.com/cheezburger/
+            banner_url: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+            display_name: JoeCool4000
+            username: joecool4000
+          slug: confused-flying-YsTs5ltWtEhnq
+          embded_url: http://giphy.com/embed/YsTs5ltWtEhnq
+          username: JoeCool4000
+        meta:
+          msg: OK
+          response_id: 57eea03c72381f86e05c35d2
+          status: 200
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Gif'
+          type: array
+        meta:
+          $ref: '#/components/schemas/Meta'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    konfig-generated-schema-components-parameters-limit-schema:
+      example: 25
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-parameters-offset-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-bitly_url:
+      example: http://gph.is/1gsWDcL
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-create_datetime:
+      example: 2013-08-01T12:41:48.000Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-embded_url:
+      example: http://giphy.com/embed/YsTs5ltWtEhnq
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-id:
+      example: YsTs5ltWtEhnq
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-import_datetime:
+      example: 2013-08-01T12:41:48.000Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-rating:
+      example: g
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-slug:
+      example: confused-flying-YsTs5ltWtEhnq
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-source:
+      example: http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-source_post_url:
+      example: http://cheezburger.com/5282328320
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-source_tld:
+      example: cheezburger.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-trending_datetime:
+      example: 2013-08-01T12:41:48.000Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-type:
+      example: gif
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-update_datetime:
+      example: 2013-08-01T12:41:48.000Z
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-url:
+      example: http://giphy.com/gifs/confused-flying-YsTs5ltWtEhnq
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Gif-properties-username:
+      example: JoeCool4000
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-frames:
+      example: "15"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-height:
+      example: "200"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-mp4:
+      example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.mp4
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-mp4_size:
+      example: "25123"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-size:
+      example: "32381"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-url:
+      example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/200.gif
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-webp:
+      example: https://media1.giphy.com/media/cZ7rmKfFYOvYI/giphy.webp
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-webp_size:
+      example: "12321"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Image-properties-width:
+      example: "320"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Meta-properties-msg:
+      example: OK
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Meta-properties-response_id:
+      example: 57eea03c72381f86e05c35d2
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Meta-properties-status:
+      example: 200
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Pagination-properties-count:
+      example: 25
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Pagination-properties-offset:
+      example: 75
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Pagination-properties-total_count:
+      example: 250
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-avatar_url:
+      example: https://media1.giphy.com/avatars/election2016/XwYrZi5H87o6.gif
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-banner_url:
+      example: https://media4.giphy.com/avatars/cheezburger/XkuejOhoGLE6.jpg
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-display_name:
+      example: JoeCool4000
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-profile_url:
+      example: https://giphy.com/cheezburger/
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-twitter:
+      example: '@joecool4000'
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-username:
+      example: joecool4000
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-single-parameter-schema-get--gifs:
+      properties:
+        ids:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - ids
+    konfig-generated-schema-single-parameter-schema-get--gifs-random:
+      properties:
+        tag:
+          type: string
+        rating:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tag
+      - rating
+    konfig-generated-schema-single-parameter-schema-get--gifs-search:
+      properties:
+        q:
+          type: string
+        limit:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        offset:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        rating:
+          type: string
+        lang:
+          type: string
+      required:
+      - q
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - q
+      - limit
+      - offset
+      - rating
+      - lang
+    konfig-generated-schema-single-parameter-schema-get--gifs-translate:
+      properties:
+        s:
+          type: string
+      required:
+      - s
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - s
+    konfig-generated-schema-single-parameter-schema-get--gifs-trending:
+      properties:
+        limit:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        offset:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        rating:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - rating
+    konfig-generated-schema-single-parameter-schema-get--gifs-gifId:
+      properties:
+        gifId:
+          format: int32
+          type: integer
+      required:
+      - gifId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - gifId
+    konfig-generated-schema-single-parameter-schema-get--stickers-random:
+      properties:
+        tag:
+          type: string
+        rating:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tag
+      - rating
+    konfig-generated-schema-single-parameter-schema-get--stickers-search:
+      properties:
+        q:
+          type: string
+        limit:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        offset:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        rating:
+          type: string
+        lang:
+          type: string
+      required:
+      - q
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - q
+      - limit
+      - offset
+      - rating
+      - lang
+    konfig-generated-schema-single-parameter-schema-get--stickers-translate:
+      properties:
+        s:
+          type: string
+      required:
+      - s
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - s
+    konfig-generated-schema-single-parameter-schema-get--stickers-trending:
+      properties:
+        limit:
+          default: 25
+          example: 25
+          format: int32
+          type: integer
+          x-konfig-original-example: 25
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-limit-schema
+        offset:
+          default: 0
+          example: 0
+          format: int32
+          type: integer
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-components-parameters-offset-schema
+        rating:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - rating
+    Gif_images_downsized:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF downsized to be under
+          2mb.
+    Gif_images_downsized_large:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF downsized to be under
+          8mb.
+    Gif_images_downsized_medium:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF downsized to be under
+          5mb.
+    Gif_images_downsized_small:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF downsized to be under
+          200kb.
+    Gif_images_downsized_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static preview image of the downsized version
+          of this GIF.
+    Gif_images_fixed_height:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed height of
+          200 pixels. Good for mobile use.
+    Gif_images_fixed_height_downsampled:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed height of
+          200 pixels and the number of frames reduced to 6.
+    Gif_images_fixed_height_small:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed height of
+          100 pixels. Good for mobile keyboards.
+    Gif_images_fixed_height_small_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static image of this GIF with a fixed height
+          of 100 pixels.
+    Gif_images_fixed_height_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static image of this GIF with a fixed height
+          of 200 pixels.
+    Gif_images_fixed_width:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed width of 200
+          pixels. Good for mobile use.
+    Gif_images_fixed_width_downsampled:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed width of 200
+          pixels and the number of frames reduced to 6.
+    Gif_images_fixed_width_small:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding versions of this GIF with a fixed width of 100
+          pixels. Good for mobile keyboards.
+    Gif_images_fixed_width_small_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static image of this GIF with a fixed width
+          of 100 pixels.
+    Gif_images_fixed_width_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static image of this GIF with a fixed width
+          of 200 pixels.
+    Gif_images_looping:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF set to loop for 15 seconds.
+    Gif_images_original:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding the original version of this GIF. Good for desktop
+          use.
+    Gif_images_original_still:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a static preview image of the original GIF.
+    Gif_images_preview:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF in .MP4 format limited
+          to 50kb that displays the first 1-2 seconds of the GIF.
+    Gif_images_preview_gif:
+      allOf:
+      - $ref: '#/components/schemas/Image'
+      - description: Data surrounding a version of this GIF limited to 50kb that displays
+          the first 1-2 seconds of the GIF.
+    Gif_images:
+      description: An object containing data for various available formats and sizes
+        of this GIF.
+      example:
+        preview: null
+        original: null
+        preview_gif: null
+        fixed_height_small: null
+        looping: null
+        downsized_still: null
+        fixed_width: null
+        downsized_large: null
+        fixed_height_downsampled: null
+        downsized_medium: null
+        fixed_height: null
+        fixed_height_small_still: null
+        fixed_width_downsampled: null
+        downsized_small: null
+        fixed_width_small: null
+        fixed_height_still: null
+        fixed_width_small_still: null
+        fixed_width_still: null
+        downsized: null
+        original_still: null
+      properties:
+        downsized:
+          $ref: '#/components/schemas/Gif_images_downsized'
+        downsized_large:
+          $ref: '#/components/schemas/Gif_images_downsized_large'
+        downsized_medium:
+          $ref: '#/components/schemas/Gif_images_downsized_medium'
+        downsized_small:
+          $ref: '#/components/schemas/Gif_images_downsized_small'
+        downsized_still:
+          $ref: '#/components/schemas/Gif_images_downsized_still'
+        fixed_height:
+          $ref: '#/components/schemas/Gif_images_fixed_height'
+        fixed_height_downsampled:
+          $ref: '#/components/schemas/Gif_images_fixed_height_downsampled'
+        fixed_height_small:
+          $ref: '#/components/schemas/Gif_images_fixed_height_small'
+        fixed_height_small_still:
+          $ref: '#/components/schemas/Gif_images_fixed_height_small_still'
+        fixed_height_still:
+          $ref: '#/components/schemas/Gif_images_fixed_height_still'
+        fixed_width:
+          $ref: '#/components/schemas/Gif_images_fixed_width'
+        fixed_width_downsampled:
+          $ref: '#/components/schemas/Gif_images_fixed_width_downsampled'
+        fixed_width_small:
+          $ref: '#/components/schemas/Gif_images_fixed_width_small'
+        fixed_width_small_still:
+          $ref: '#/components/schemas/Gif_images_fixed_width_small_still'
+        fixed_width_still:
+          $ref: '#/components/schemas/Gif_images_fixed_width_still'
+        looping:
+          $ref: '#/components/schemas/Gif_images_looping'
+        original:
+          $ref: '#/components/schemas/Gif_images_original'
+        original_still:
+          $ref: '#/components/schemas/Gif_images_original_still'
+        preview:
+          $ref: '#/components/schemas/Gif_images_preview'
+        preview_gif:
+          $ref: '#/components/schemas/Gif_images_preview_gif'
+      type: object
+  securitySchemes:
+    api_key:
+      in: query
+      name: api_key
+      type: apiKey
+      x-konfig-globally-required-security: true
+
